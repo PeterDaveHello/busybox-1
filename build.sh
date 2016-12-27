@@ -15,7 +15,7 @@ for version in "${versions[@]}"; do
 	(
 		set -x
 		docker build -t "$base$version-builder" --pull -f "$version/Dockerfile.builder" "$version"
-		docker run --rm "$base$version-builder" tar cC rootfs . | xz -z9 > "$version/busybox.tar.xz"
+		docker run --rm "$base$version-builder" tar cC rootfs . | xz -e > "$version/busybox.tar.xz"
 		docker build -t "$base$version" "$version"
 		docker run --rm "$base$version" sh -xec 'true'
 		docker run --rm "$base$version" ping -c 1 google.com
